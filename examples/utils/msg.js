@@ -1,0 +1,16 @@
+
+var OPERATE_CONFIRM = '确定要进行此操作吗？';
+var OPERATE_SUCCESS = '操作成功。';
+
+var REMOVE_CONFIRM = '确定要删除吗？';
+var REMOVE_SUCCESS = '删除成功。';
+
+var VALIDATE_ERROR = '请检查您的输入。';
+var SAVE_SUCCESS = '保存成功。';
+
+var CATEGORY_HAS_CHILD = '此分类下有子类，不能删除';
+
+var SPEC_LEAST_ONE = '规格启用时，至少保留一种规格';
+
+export { OPERATE_CONFIRM, OPERATE_SUCCESS, REMOVE_CONFIRM, REMOVE_SUCCESS, VALIDATE_ERROR, SAVE_SUCCESS, 
+	CATEGORY_HAS_CHILD, SPEC_LEAST_ONE }
