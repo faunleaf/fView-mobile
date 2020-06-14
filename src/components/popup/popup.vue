@@ -1,6 +1,6 @@
 <template>
   <transition :name="`vux-popup-animate-${position}`">
-    <div v-show="show" :style="styles" class="vux-popup" :class="`vux-popup-${position}`">
+    <div v-show="show && !initialShow" :style="styles" class="vux-popup-dialog" :class="[`vux-popup-${position}`, show ? 'vux-popup-show' : '']">
       <slot></slot>
     </div>
   </transition>
@@ -10,6 +10,7 @@
 import Popup from './popup.js'
 
 export default {
+  name: 'popup',
   props: {
     value: Boolean,
     height: {
@@ -32,15 +33,21 @@ export default {
     position: {
       type: String,
       default: 'bottom'
+    },
+    maxHeight: String,
+    popupStyle: Object,
+    hideOnDeactivated: {
+      type: Boolean,
+      default: true
     }
   },
   mounted () {
+    this.$overflowScrollingList = document.querySelectorAll('.vux-fix-safari-overflow-scrolling')
     this.$nextTick(() => {
       const _this = this
       this.popup = new Popup({
         showMask: _this.showMask,
         container: _this.$el,
-        innerHTML: '',
         hideOnBlur: _this.hideOnBlur,
         onOpen () {
           _this.fixSafariOverflowScrolling('auto')
@@ -48,14 +55,17 @@ export default {
         },
         onClose () {
           _this.show = false
-          if (Object.keys(window.__$vuxPopups).length > 1) return
+          if (window.__$vuxPopups && Object.keys(window.__$vuxPopups).length > 1) return
           if (document.querySelector('.vux-popup-dialog.vux-popup-mask-disabled')) return
           setTimeout(() => {
             _this.fixSafariOverflowScrolling('touch')
           }, 300)
         }
       })
-      this.$overflowScrollingList = document.querySelectorAll('.vux-fix-safari-overflow-scrolling')
+      if (this.value) {
+        this.popup.show()
+      }
+      this.initialShow = false
     })
   },
   methods: {
@@ -73,6 +83,7 @@ export default {
   },
   data () {
     return {
+      initialShow: true,
       hasFirstShow: false,
       show: this.value
     }
@@ -85,16 +96,26 @@ export default {
       } else {
         styles.width = this.width
       }
-
+      if (this.maxHeight) {
+        styles['max-height'] = this.maxHeight
+      }
       this.isTransparent && (styles['background'] = 'transparent')
+      if (this.popupStyle) {
+        for (let i in this.popupStyle) {
+          styles[i] = this.popupStyle[i]
+        }
+      }
       return styles
     }
   },
   watch: {
+    value (val) {
+      this.show = val
+    },
     show (val) {
       this.$emit('input', val)
       if (val) {
-        this.popup.show()
+        this.popup && this.popup.show()
         this.$emit('on-show')
         this.fixSafariOverflowScrolling('auto')
         if (!this.hasFirstShow) {
@@ -111,13 +132,10 @@ export default {
           }
         }, 200)
       }
-    },
-    value (val) {
-      this.show = val
     }
   },
   beforeDestroy () {
-    this.popup.destroy()
+    this.popup && this.popup.destroy()
     this.fixSafariOverflowScrolling('touch')
   }
 }

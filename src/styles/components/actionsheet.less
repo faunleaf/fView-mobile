@@ -10,9 +10,15 @@
 .vux-actionsheet-menu-disabled {
   color: @actionsheet-label-disabled-color;
 }
-.vux-actionsheet-mask-enter, .vux-actionsheet-mask-leave-active {
+.vux-actionsheet-mask-enter,
+.vux-actionsheet-mask-leave-active,
+.vux-android-actionsheet-enter,
+.vux-android-actionsheet-leave-active {
   opacity: 0;
 }
-.vux-actionsheet-mask-leave-active, .vux-actionsheet-mask-enter-active {
-  transition: opacity 300ms;
+.vux-actionsheet-mask-leave-active,
+.vux-actionsheet-mask-enter-active,
+.vux-android-actionsheet-leave-active,
+.vux-android-actionsheet-enter-active {
+  transition: opacity 300ms!important;
 }

@@ -28,6 +28,7 @@ iAlert.newInstance = properties => {
         }),
         methods: {
             remove () {
+                this.onHide();
                 setTimeout(() => {
                     this.destroy();
                 }, 300);
@@ -37,6 +38,7 @@ iAlert.newInstance = properties => {
                 document.body.removeChild(this.$el);
                 this.onRemove();
             },
+            onHide() {},
             onRemove () {},
         }
     });
@@ -53,6 +55,10 @@ iAlert.newInstance = properties => {
 
             if ('buttonText' in props) {
                 alert.buttonText = props.buttonText;
+            }
+
+            if ('onHide' in props) {
+                alert.onHide = props.onHide;
             }
 
             // notice when component destroy
