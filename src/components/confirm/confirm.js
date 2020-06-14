@@ -12,7 +12,7 @@ iConfirm.newInstance = properties => {
 
     const div = document.createElement('div');
     div.innerHTML = `
-        <i-confirm${props} v-model="visible" :title="title" :content="content" :confirm-text="confirmText" :cancel-text="cancelText" @on-hide="remove" @on-confirm="onConfirm" @on-cancel="onCancel">
+        <i-confirm${props} v-model="visible" :title="title" :content="content" :hide-on-blur="hideOnBlur" :confirm-text="confirmText" :cancel-text="cancelText" @on-hide="remove" @on-confirm="onConfirm" @on-cancel="onCancel">
         </i-confirm>
     `;
     document.body.appendChild(div);
@@ -24,6 +24,7 @@ iConfirm.newInstance = properties => {
             visible: false,
             title: '',
             content: '',
+            hideOnBlur: false,
             confirmText: '',
             cancelText: '',
         }),
@@ -52,6 +53,10 @@ iConfirm.newInstance = properties => {
 
             if ('content' in props) {
                 confirm.content = props.content;
+            }
+
+            if ('hideOnBlur' in props) {
+                confirm.hideOnBlur = props.hideOnBlur;
             }
 
             if ('confirmText' in props) {
